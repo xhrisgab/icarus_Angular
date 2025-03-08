@@ -1,0 +1,114 @@
+.button1 {
+    background-color: #F2B441;
+    /* Green */
+    border: 2px solid #1F6A73;
+    border-radius: 20px;
+    color: #1F6A73;
+    padding: 8px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.button1:hover {
+    background-color: #1F6A73;
+    color: #F2B441;
+}
+
+.button1:active {
+    background-color: #36BFBF;
+    /* box-shadow: 0 5px #666; */
+    transform: translateY(4px);
+}
+
+
+.button2 {
+    background-color: transparent;
+    border: 2px solid #F2B441;
+    border-radius: 20px;
+    color: #F2B441;
+    padding: 1px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.button2:hover {
+    background-color: #F27244;
+    color: #F2B441;
+}
+
+.button2:active {
+    background-color: #36BFBF;
+    /* box-shadow: 0 5px #666; */
+    transform: translateY(4px);
+}
+
+.label1 {
+    border: 2px solid #F27244;
+    background-color: #1F6A73;
+    border-radius: 10px;
+    color: #F27244;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+
+.label2 {
+    border: 2px solid #F2B441;
+    background-color: #051926;
+    border-radius: 10px;
+    color: #F2B441;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+
+.text1 {
+    border: 2px solid #F27244;
+    background-color: transparent;
+    border-radius: 10px;
+    color: #1F6A73;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.text2 {
+    border: 2px solid #F2B441;
+    background-color: #051926;
+    border-radius: 10px;
+    color: #F2B441;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.tfecha {
+    color: #36BFBF;
+}
+
+.circle-progress-value {
+	stroke-width: 10px;
+	stroke: #36BFBF;
+	stroke-dasharray: 0.6 3;
+}
+.circle-progress-circle {
+	stroke-width: 0px;
+	stroke: #F2B441;
+	stroke-dasharray: 5 3;
+	stroke-dashoffset: 30;
+}
+.circle-progress-text {
+	font-family: "Gotham Rounded Light";
+	fill: #36BFBF;
+	font-size: 50px;
+}
