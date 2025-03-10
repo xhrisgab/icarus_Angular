@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 interface Coordenadas{
   x:number;
@@ -11,7 +11,8 @@ interface Coordenadas{
   standalone: true,
   imports: [],
   templateUrl: './yellow-card.component.html',
-  styleUrl: './yellow-card.component.css'
+  styleUrl: './yellow-card.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YellowCardComponent {
 

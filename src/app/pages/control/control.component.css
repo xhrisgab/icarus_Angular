@@ -23,34 +23,11 @@
     transform: translateY(4px);
 }
 
-
-.label2 {
-    border: 2px solid #F2B441;
-    background-color: #051926;
-    border-radius: 10px;
-    color: #F2B441;
-    display: inline-block;
-    font-size: 20px;
-    font-weight: bold;
-
-}
-
 .text1 {
     border: 2px solid #F27244;
     background-color: transparent;
     border-radius: 10px;
     color: #1F6A73;
-    display: inline-block;
-    font-size: 20px;
-    font-weight: bold;
-    width: 100%;
-}
-
-.text2 {
-    border: 2px solid #F2B441;
-    background-color: #051926;
-    border-radius: 10px;
-    color: #F2B441;
     display: inline-block;
     font-size: 20px;
     font-weight: bold;

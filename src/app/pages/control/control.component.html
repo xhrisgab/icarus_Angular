@@ -55,10 +55,6 @@
 
             <div class="text-center">
                 <h5 class="" style="color: #F27244;">Bateria</h5>
-                <!-- <circle-progress
-                    class="circle-progress circle-progress-value circle-progress-circle circle-progress-text" value="75"
-                    max="100" anticlockwise='true'></circle-progress> -->
-                    <!-- <h2 style="color: #F2B441; font-weight: bold;" >BATERIA</h2> -->
                   <circle-progress [percent]="(loraService.bateria())"
                   [radius]="50"
                   [outerStrokeWidth]="10"
@@ -73,86 +69,11 @@
     </div>
 
     <div class="row mt-5">
-        <div class="col-3">
-            <div class="row content-justify-between">
-                <div class="col-6">
-                    <label class="my-3" for="Logs" style="color: #F2B441; font-weight: bold;">Temperatura</label>
-                </div>
-                <div class="col-6 my-auto">
-                    <button class="button2">Ver detalles</button>
-                </div>
+        @for (dato of loraService.sensores(); track $index) {
+            <div class="col-6 col-xl-3">
+                <blue-card [datoSensor]="dato"></blue-card>
             </div>
-            <div class="container" style="border: 2px solid #1F6A73; border-radius:20px; background:#1F6A73;">
-                <div class="row py-2 justify-content-center">
-                    <div class="col-2">
-                        <label for="X" class="label2 text-center px-2 py-1">K</label>
-                    </div>
-                    <div class="col-8">
-                        <input class="text2 text-center py-1" type="text" value="20.51" disabled>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="row content-justify-between">
-                <div class="col-6">
-                    <label class="my-3" for="Logs" style="color: #F2B441; font-weight: bold;">Presion</label>
-                </div>
-                <div class="col-6 my-auto">
-                    <button class="button2">Ver detalles</button>
-                </div>
-            </div>
-            <div class="container" style="border: 2px solid #1F6A73; border-radius:20px; background:#1F6A73;">
-                <div class="row py-2 justify-content-center">
-                    <div class="col-2">
-                        <label for="X" class="label2 text-center px-2 py-1">atm</label>
-                    </div>
-                    <div class="col-8">
-                        <input class="text2 text-center py-1" type="text" value="0.98" disabled>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="row content-justify-between">
-                <div class="col-6">
-                    <label class="my-3" for="Logs" style="color: #F2B441; font-weight: bold;">CO2</label>
-                </div>
-                <div class="col-6 my-auto">
-                    <button class="button2">Ver detalles</button>
-                </div>
-            </div>
-            <div class="container" style="border: 2px solid #1F6A73; border-radius:20px; background:#1F6A73;">
-                <div class="row py-2 justify-content-center">
-                    <div class="col-2">
-                        <label for="X" class="label2 text-center px-2 py-1">ppm</label>
-                    </div>
-                    <div class="col-8">
-                        <input class="text2 text-center py-1" type="text" value="2.35" disabled>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="row content-justify-between">
-                <div class="col-6">
-                    <label class="my-3" for="Logs" style="color: #F2B441; font-weight: bold;">Altitud</label>
-                </div>
-                <div class="col-6 my-auto">
-                    <button class="button2">Ver detalles</button>
-                </div>
-            </div>
-            <div class="container" style="border: 2px solid #1F6A73; border-radius:20px; background:#1F6A73;">
-                <div class="row py-2 justify-content-center">
-                    <div class="col-2">
-                        <label for="X" class="label2 text-center px-2 py-1">m</label>
-                    </div>
-                    <div class="col-8">
-                        <input class="text2 text-center py-1" type="text" value="238.50" disabled>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 
 
