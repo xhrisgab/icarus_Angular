@@ -11,7 +11,7 @@ import { BlueCardComponent } from '../components/shared/blue-card/blue-card.comp
   imports: [DatePipe, SharedModule,YellowCardComponent, BlueCardComponent],
   templateUrl: './control.component.html',
   styleUrl: './control.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ControlComponent {
 
