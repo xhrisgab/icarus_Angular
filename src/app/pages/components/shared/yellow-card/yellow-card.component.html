@@ -1,0 +1,34 @@
+<div class="row justify-content-between">
+  <div class="col-6">
+      <label class="my-3" for="Logs" style="color: #F27244; font-weight: bold;">{{ title() }}</label>
+  </div>
+  <div class="col-6 my-auto">
+      <button class="button2">Ver detalles</button>
+  </div>
+</div>
+<div class="container" style="border: 2px solid #F27244; border-radius:20px; background:#F2B441;">
+  <div class="row py-2 justify-content-center">
+      <div class="col-2">
+          <label for="X" class="label1 text-center px-2 py-1">X</label>
+      </div>
+      <div class="col-8">
+          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().x }}" disabled>
+      </div>
+  </div>
+  <div class="row py-2 justify-content-center">
+      <div class="col-2">
+          <label for="Y" class="label1 text-center px-2 py-1">Y</label>
+      </div>
+      <div class="col-8">
+          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().y }}" disabled>
+      </div>
+  </div>
+  <div class="row py-2 justify-content-center">
+      <div class="col-2">
+          <label for="Z" class="label1 text-center px-2 py-1">Z</label>
+      </div>
+      <div class="col-8">
+          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().z }}" disabled>
+      </div>
+  </div>
+</div>
