@@ -11,7 +11,7 @@ import Chart from 'chart.js/auto';
   styleUrl: './history-page.component.css'
 })
 export class HistoryPageComponent {
-  title = 'ng-chart';
+  //title = 'ng-chart';
   chart: any = [];
 
   ngOnInit() {
@@ -40,6 +40,11 @@ export class HistoryPageComponent {
         ],
       },
       options: {
+        elements:{
+          line:{
+            tension:0.1,
+          }
+        },
         scales: {
           y: {
             beginAtZero: true,
