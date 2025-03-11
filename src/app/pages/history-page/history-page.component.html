@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div class="row text-center">
+        <h5 class="" style="color: #F27244;">Presion</h5>
+        <p>Datos de la presion medido en atmosferas</p>
+        <circle-progress [percent]="0.70" 
+            [maxPercent]="2"
+            [toFixed]="2"
+            [radius]="50" 
+            [outerStrokeWidth]="10" 
+            [innerStrokeWidth]="4"
+            [showUnits]="false" 
+            [subtitle]="'atmosfe ras'" 
+            [outerStrokeColor]="'#1F6A73'" 
+            [innerStrokeColor]="'#F2B441'"
+            [animation]="true" 
+            [animationDuration]="800"></circle-progress>
+    </div>
+    <div class="row text-center">
+        <canvas id="canvas" width="80%" height="20%">{{ chart }}</canvas>
+    </div>
+</div>
