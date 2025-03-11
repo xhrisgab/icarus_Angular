@@ -5,6 +5,8 @@ import { Sensor, Coordenadas } from '../interfaces/lora.interface';
 export class LoraService {
     constructor() { }
 
+
+    // DATOS
     loraDate = new Date();
     bateria = signal(85);
     acelerometro = signal<Coordenadas>({x:21.51,y:0.52,z:10.48});
@@ -32,7 +34,6 @@ export class LoraService {
         valor: 238.50
       },
     ]);
-
 
 
 }
