@@ -11,7 +11,12 @@
             </select>
         </div>
         <div class="col-3 my-auto">
-            <button class="button1">Conectar</button>
+            @if (!loraService.linkLora()) {
+                <button class="button1" (click)="loraService.addDataDB()" >Conectar</button>
+            }
+            @else {
+                <button class="button1" (click)="loraService.stopAdd()" >Desconectar</button>
+            }
         </div>
         <!-- <div class="col-3">
             <br>
@@ -59,7 +64,11 @@
                   [radius]="50"
                   [outerStrokeWidth]="10"
                   [innerStrokeWidth]="4"
-                  [subtitle]="'Percentage'"
+                  [showSubtitle]="false"
+                  [titleColor]="'#36BFBF'"
+                  [titleFontSize]="'30'"
+                  [unitsColor]="'#36BFBF'"
+                  [unitsFontSize]="'20'"
                   [outerStrokeColor]="'#78C000'"
                   [innerStrokeColor]="'#C7E596'"
                   [animation]="true"
@@ -69,11 +78,18 @@
     </div>
 
     <div class="row mt-5">
-        @for (dato of loraService.sensores(); track $index) {
-            <div class="col-6 col-xl-3">
-                <blue-card [datoSensor]="dato"></blue-card>
-            </div>
-        }
+        <div class="col-6 col-xl-3">
+            <blue-card [datoSensor]="loraService.temperatura()" [nameCard]="'Temperatura'"></blue-card>
+        </div>
+        <div class="col-6 col-xl-3">
+            <blue-card [datoSensor]="loraService.presion()" [nameCard]="'Presion'"></blue-card>
+        </div>
+        <div class="col-6 col-xl-3">
+            <blue-card [datoSensor]="loraService.co2()" [nameCard]="'CO2'"></blue-card>
+        </div>
+        <div class="col-6 col-xl-3">
+            <blue-card [datoSensor]="loraService.altura()" [nameCard]="'Altura'"></blue-card>
+        </div>
     </div>
 
 

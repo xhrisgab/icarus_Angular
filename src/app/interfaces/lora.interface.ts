@@ -1,5 +1,6 @@
 export interface Sensor{
-  nombre: string;
+  hora: string;
+  paquete: number;
   unidad: string;
   valor: number;
 }

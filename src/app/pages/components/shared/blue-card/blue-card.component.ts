@@ -11,6 +11,7 @@ import type { Sensor } from '../../../../interfaces/lora.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlueCardComponent {
+  nameCard = input.required<string>();
   datoSensor = input.required<Sensor>();
 
  }

@@ -17,11 +17,6 @@ export class ControlComponent {
 
   public loraService = inject(LoraService);
 
-  constructor(){
-    setInterval(()=>{
-      this.loraService.bateria.update((current)=> current = Math.random()*100)
-    },2000)
-  }
-
+  constructor(){}
 
 }
