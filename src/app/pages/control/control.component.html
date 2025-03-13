@@ -79,7 +79,7 @@
 
     <div class="row mt-5">
         <div class="col-6 col-xl-3">
-            <blue-card [datoSensor]="loraService.temperatura()" [nameCard]="'Temperatura'"></blue-card>
+            <blue-card [datoSensor]="loraService.temperatura()[loraService.temperatura().length-1]" [nameCard]="'Temperatura'"></blue-card>
         </div>
         <div class="col-6 col-xl-3">
             <blue-card [datoSensor]="loraService.presion()" [nameCard]="'Presion'"></blue-card>

@@ -1,5 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { Sensor, Coordenadas } from '../interfaces/lora.interface';
+
+const loadFromLocalStorage = (): Sensor[] =>{
+    const temperatura = localStorage.getItem('temp');
+    return temperatura ? JSON.parse(temperatura) : [];
+}
 
 @Injectable({providedIn: 'root'})
 export class LoraService {
@@ -14,12 +19,8 @@ export class LoraService {
     acelerometro = signal<Coordenadas>({x:21.51,y:0.52,z:10.48});
     giroscopio = signal<Coordenadas>({x:4.23,y:21.5,z:8.51});
 
-    temperatura = signal<Sensor>({
-      hora: Date(),
-      paquete: 0,
-      unidad: 'K',
-      valor: 0
-    });
+    temperatura = signal<Sensor[]>(loadFromLocalStorage());
+
     presion = signal<Sensor>({
       hora: Date(),
       paquete: 0,
@@ -39,11 +40,19 @@ export class LoraService {
       valor: 0
     });
 
+
     addDataDB(){
 
       this.timerID=setInterval(()=>{
         this.linkLora.set(true);
-        this.bateria.update((current)=> current = Math.random()*100);
+        this.bateria.update((current)=> current = Number((Math.random()*100).toFixed(2)));
+        // Almacena datos al array
+        this.temperatura.update((list)=>[...list, {
+          hora:Date(),
+          paquete:this.bateria(),
+          unidad:'K',
+          valor:Number((Math.random()*100).toFixed(2))
+        }])
         console.log(this.bateria(), this.timerID);   
       },2000)
     }
@@ -53,4 +62,7 @@ export class LoraService {
       this.linkLora.set(false);
     }
 
+    saveTemperaturaToLS = effect( ()=> {
+        localStorage.setItem('temp', JSON.stringify(this.temperatura()));
+    });
 }
