@@ -3,7 +3,9 @@
         <label class="my-3" for="Logs" style="color: #F2B441; font-weight: bold;">{{ nameCard() }}</label>
     </div>
     <div class="col-6 my-auto">
-        <button class="button2">Ver detalles</button>
+        <a [routerLink]="['/history/1']" >
+            <button class="button2">Ver detalles</button>
+        </a>
     </div>
 </div>
 <div class="container" style="border: 2px solid #1F6A73; border-radius:20px; background:#1F6A73;">

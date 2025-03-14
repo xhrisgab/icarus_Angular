@@ -20,6 +20,7 @@ export class LoraService {
     giroscopio = signal<Coordenadas>({x:4.23,y:21.5,z:8.51});
 
     temperatura = signal<Sensor[]>(loadFromLocalStorage());
+    chartTempData = signal<Sensor[]>([...this.temperatura()]);
 
     presion = signal<Sensor>({
       hora: Date(),
@@ -53,7 +54,8 @@ export class LoraService {
           unidad:'K',
           valor:Number((Math.random()*100).toFixed(2))
         }])
-        console.log(this.bateria(), this.timerID);   
+        this.chartTempData.update((x)=> x=this.temperatura().slice(-10))
+        console.log(this.chartTempData().map((x)=>x.hora));   
       },2000)
     }
 
