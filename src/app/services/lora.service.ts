@@ -54,9 +54,10 @@ export class LoraService {
           unidad:'K',
           valor:Number((Math.random()*100).toFixed(2))
         }])
-        this.chartTempData.update((x)=> x=this.temperatura().slice(-10))
-        console.log(this.chartTempData().map((x)=>x.hora));   
-      },2000)
+        this.chartTempData.update((x)=> x=this.temperatura().slice(-10));
+
+        //console.log(this.chartTempData() /* this.chartTempData().map((x)=>x.valor) */);   
+      },5000)
     }
 
     stopAdd(){

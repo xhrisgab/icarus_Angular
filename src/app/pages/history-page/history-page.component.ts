@@ -1,66 +1,48 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SharedModule } from '../components/shared/shared.module';
 
-import Chart from 'chart.js/auto';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { LoraService } from '../../services/lora.service';
 
 @Component({
   selector: 'app-history-page',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, CanvasJSAngularChartsModule],
   templateUrl: './history-page.component.html',
   styleUrl: './history-page.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryPageComponent {
 
   public loraService = inject(LoraService);
-
-  //title = 'ng-chart';
-  //https://valor-software.com/ng2-charts/line
-  chart: any = [];
-
-  ngOnInit() {
-    this.chart = new Chart('canvas', {
-      type: 'line',
-      data: {
-        // LABEL inferior o datos en eje x 
-        labels: this.loraService.chartTempData().map((x)=>x.hora),
-        datasets: [
-          {
-            // Titulo superior
-            label: '# of Votes',
-            // Datos en eje Y, valor altura automatico.
-            data: this.loraService.chartTempData().map((x)=>x.valor),
-            borderWidth: 2,
-            borderColor: '#1F6A73',
-            fill:'origin'
-          },
-          /* {
-            // Titulo superior
-            label: '# of Decert',
-            // Datos en eje Y, valor altura automatico.
-            data: [19, 13, 7, 9, 4, 13],
-            borderWidth: 2,
-            borderColor: '#F27244'
-          }, */
-        ],
-      },
-      options: {
-        elements:{
-          line:{
-            tension:0.1,
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: '#F2B441',
-            },
-          },
-        },
-      },
-    });
-  }
+ //-----
+   dps:any = []; // {x: 2, y: 13}, {x: 3, y: 18}, {x: 4, y: 20}, {x: 5, y: 17},{x: 6, y: 10}, {x: 7, y: 13}, {x: 8, y: 18}, {x: 9, y: 20}, {x: 10, y: this.loraService.chartTempData()[9].valor}];
+	chart: any;
+	
+	chartOptions = {
+	  exportEnabled: true,
+	  title: {
+		text: "Angular Dynamic Chart"
+	  },
+	  data: [{
+		type: "line",
+    //color: '#351387',
+		dataPoints: this.dps, //[{x: this.loraService.chartTempData().map((x)=>x.hora),y: this.loraService.chartTempData().map((x)=>x.valor)}]
+	  }]
+	}
+	getChartInstance(chart: object) {
+		this.chart = chart;
+		setTimeout(this.updateChart, 5000); //Chart updated every 5 second
+	}
+	 updateChart = () => {
+		this.dps.push({ label: this.loraService.chartTempData()[this.loraService.chartTempData().length-1].hora, y: this.loraService.chartTempData()[this.loraService.chartTempData().length-1].valor});
+ 
+		if (this.dps.length >  10 ) {
+			this.dps.shift();
+		}
+		console.log(this.dps);
+		
+		this.chart.render();
+		setTimeout(this.updateChart, 5000); //Chart updated every 1 second
+	} 
 }
