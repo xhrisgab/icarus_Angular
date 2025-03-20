@@ -1,0 +1,52 @@
+{
+  "temperatura": [
+    {
+      "id": 0,
+      "fecha":"",
+      "valor": 0
+    }
+  ],
+  "presion": [
+    {
+      "id": 0,
+      "fecha":"",
+      "valor": 0
+    }
+  ],
+  "co2": [
+    {
+      "id": 0,
+      "fecha":"",
+      "valor": 0
+    }
+  ],
+  "altura": [
+    {
+      "id": 0,
+      "fecha":"",
+      "valor": 0
+    }
+  ],
+  "acelerometro": [
+    {
+      "id": 0,
+      "fecha":"",
+      "valor": {
+      "x":0,
+      "y":0,
+      "z":0
+      }
+    }
+  ],
+    "giroscopio": [
+    {
+      "id": 0,
+      "fecha":"",
+      "valor": {
+      "x":0,
+      "y":0,
+      "z":0
+      }
+    }
+  ]
+}

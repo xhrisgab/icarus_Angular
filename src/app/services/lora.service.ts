@@ -11,6 +11,7 @@ export class LoraService {
     constructor() {}
 
     private timerID: any;
+    private conTemporal:number = 0;
 
     // DATOS
     loraDate = new Date();
