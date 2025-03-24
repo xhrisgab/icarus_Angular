@@ -3,12 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Sensor, Coordenadas } from '../interfaces/lora.interface';
 import { environment } from '../environments/environment.development';
 
-/* const loadFromLocalStorage = (): Sensor[] =>{
-    const temperatura = localStorage.getItem('temp');
-    
-    return temperatura ? JSON.parse(temperatura) : [];
-} */
-
 @Injectable({providedIn: 'root'})
 export class LoraService {
 
@@ -33,7 +27,6 @@ export class LoraService {
       fecha: Date(),
       valor: 0
     });
-    //chartTempData = signal<Sensor[]>([...this.temperatura()]);
 
     presion = signal<Sensor>({
       id:0,
@@ -57,16 +50,19 @@ export class LoraService {
       this.timerID=setInterval(()=>{
         this.linkLora.set(true);
         this.bateria.update((current)=> current = Number((Math.random()*100).toFixed(2)));
-        // Almacena datos al array
+
+        // Actualiza datos en tiempo real
         this.temperatura.update((temp)=> temp={
           id:this.conTemporal+1,
           fecha:Date(),
           valor: this.bateria()
         })
         this.conTemporal++;
+
+        //Almacena en BD
         this.http.post<Sensor>(`${ environment.backUrl }/temperatura`, this.temperatura())
         .subscribe( (resp) => console.log(resp) );
-        //console.log(this.chartTempData() /* this.chartTempData().map((x)=>x.valor) */);   
+  
       },3000)
     }
 
