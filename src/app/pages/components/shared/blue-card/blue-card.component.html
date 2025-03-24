@@ -11,9 +11,9 @@
 <div class="container" style="border: 2px solid #1F6A73; border-radius:20px; background:#1F6A73;">
     <div class="row py-2 justify-content-center">
         <div class="col-2">
-            <label for="unidad" class="label2 text-center px-2 py-1">{{ datoSensor().unidad }}</label>
+            <label for="unidad" class="label2 text-center px-2 py-1">{{ unidad() }}</label>
         </div>
-        <div class="col-8">
+        <div class="col text-end">
             <input class="text2 text-center py-1" type="text" value="{{ datoSensor().valor }}" disabled>
         </div>
     </div>

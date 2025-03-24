@@ -13,6 +13,7 @@ import type { Sensor } from '../../../../interfaces/lora.interface';
 })
 export class BlueCardComponent {
   nameCard = input.required<string>();
+  unidad = input.required<string>();
   datoSensor = input.required<Sensor>();
 
  }

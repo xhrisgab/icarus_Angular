@@ -16,7 +16,7 @@ export class HistoryPageComponent {
 
   public loraService = inject(LoraService);
  //-----
-   dps:any = []; // {x: 2, y: 13}, {x: 3, y: 18}, {x: 4, y: 20}, {x: 5, y: 17},{x: 6, y: 10}, {x: 7, y: 13}, {x: 8, y: 18}, {x: 9, y: 20}, {x: 10, y: this.loraService.chartTempData()[9].valor}];
+   dps:any = [];
 	chart: any;
 	
 	chartOptions = {
@@ -27,7 +27,7 @@ export class HistoryPageComponent {
 	  data: [{
 		type: "line",
     //color: '#351387',
-		dataPoints: this.dps, //[{x: this.loraService.chartTempData().map((x)=>x.hora),y: this.loraService.chartTempData().map((x)=>x.valor)}]
+		dataPoints: this.dps,
 	  }]
 	}
 	getChartInstance(chart: object) {
@@ -35,7 +35,7 @@ export class HistoryPageComponent {
 		setTimeout(this.updateChart, 5000); //Chart updated every 5 second
 	}
 	 updateChart = () => {
-		this.dps.push({ label: this.loraService.chartTempData()[this.loraService.chartTempData().length-1].hora, y: this.loraService.chartTempData()[this.loraService.chartTempData().length-1].valor});
+		this.dps.push({ label: this.loraService.temperatura().fecha, y: this.loraService.temperatura().valor, x: this.loraService.temperatura().id });
  
 		if (this.dps.length >  10 ) {
 			this.dps.shift();

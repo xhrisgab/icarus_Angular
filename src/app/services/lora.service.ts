@@ -1,14 +1,22 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Sensor, Coordenadas } from '../interfaces/lora.interface';
+import { environment } from '../environments/environment.development';
 
-const loadFromLocalStorage = (): Sensor[] =>{
+/* const loadFromLocalStorage = (): Sensor[] =>{
     const temperatura = localStorage.getItem('temp');
+    
     return temperatura ? JSON.parse(temperatura) : [];
-}
+} */
 
 @Injectable({providedIn: 'root'})
 export class LoraService {
-    constructor() {}
+
+  private http = inject(HttpClient)
+
+    constructor() {
+      this.loadTempFromDB();
+    }
 
     private timerID: any;
     private conTemporal:number = 0;
@@ -20,25 +28,26 @@ export class LoraService {
     acelerometro = signal<Coordenadas>({x:21.51,y:0.52,z:10.48});
     giroscopio = signal<Coordenadas>({x:4.23,y:21.5,z:8.51});
 
-    temperatura = signal<Sensor[]>(loadFromLocalStorage());
-    chartTempData = signal<Sensor[]>([...this.temperatura()]);
+    temperatura = signal<Sensor>({
+      id:0,
+      fecha: Date(),
+      valor: 0
+    });
+    //chartTempData = signal<Sensor[]>([...this.temperatura()]);
 
     presion = signal<Sensor>({
-      hora: Date(),
-      paquete: 0,
-      unidad: 'atm',
+      id:0,
+      fecha: Date(),
       valor: 0
     });
     co2 = signal<Sensor>({
-      hora: Date(),
-      paquete: 0,
-      unidad: 'ppm',
+      id: 0,
+      fecha: Date(),
       valor: 0
     });
     altura = signal<Sensor>({
-      hora: Date(),
-      paquete: 0,
-      unidad: 'm',
+      id: 0,
+      fecha: Date(),
       valor: 0
     });
 
@@ -49,16 +58,16 @@ export class LoraService {
         this.linkLora.set(true);
         this.bateria.update((current)=> current = Number((Math.random()*100).toFixed(2)));
         // Almacena datos al array
-        this.temperatura.update((list)=>[...list, {
-          hora:Date(),
-          paquete:this.bateria(),
-          unidad:'K',
-          valor:Number((Math.random()*100).toFixed(2))
-        }])
-        this.chartTempData.update((x)=> x=this.temperatura().slice(-10));
-
+        this.temperatura.update((temp)=> temp={
+          id:this.conTemporal+1,
+          fecha:Date(),
+          valor: this.bateria()
+        })
+        this.conTemporal++;
+        this.http.post<Sensor>(`${ environment.backUrl }/temperatura`, this.temperatura())
+        .subscribe( (resp) => console.log(resp) );
         //console.log(this.chartTempData() /* this.chartTempData().map((x)=>x.valor) */);   
-      },5000)
+      },3000)
     }
 
     stopAdd(){
@@ -69,4 +78,12 @@ export class LoraService {
     saveTemperaturaToLS = effect( ()=> {
         localStorage.setItem('temp', JSON.stringify(this.temperatura()));
     });
+
+
+    private loadTempFromDB(){
+      this.http.get<Sensor[]>(`${ environment.backUrl }/temperatura`).subscribe((resp) =>{
+        console.log(resp);
+        this.temperatura.set(resp[resp.length-1]);
+      });
+    }
 }
