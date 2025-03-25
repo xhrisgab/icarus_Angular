@@ -17,10 +17,13 @@ export class LoraService {
 
     // DATOS
     loraDate = new Date();
+    //Habilita boton conectar o desconectar puerto COM
     linkLora = signal(false);
+    //Verifica estado de la Bateria
     bateria = signal(100);
-    acelerometro = signal<Coordenadas>({x:21.51,y:0.52,z:10.48});
-    giroscopio = signal<Coordenadas>({x:4.23,y:21.5,z:8.51});
+    //Seccion de datos del LORA
+    acelerometro = signal<Coordenadas>({id:0, fecha: '', valor: {x:0,y:0,z:0}});
+    giroscopio = signal<Coordenadas>({id:0, fecha: '', valor:{x:0,y:0,z:0}});
 
     temperatura = signal<Sensor>({
       id:0,
@@ -44,7 +47,7 @@ export class LoraService {
       valor: 0
     });
 
-
+    //Funcion para actualizar y enviar datos a la API para almacenar
     addDataDB(){
 
       this.timerID=setInterval(()=>{
@@ -66,21 +69,44 @@ export class LoraService {
 
       },3000)
     }
-
+    //Fucion Detener actualizacion de datos y desconecion del Puerto COM
     stopAdd(){
       clearInterval(this.timerID);
       this.linkLora.set(false);
     }
 
-    saveTemperaturaToLS = effect( ()=> {
-        localStorage.setItem('temp', JSON.stringify(this.temperatura()));
-    });
-
-
+    //Primera muestra de datos y prueba desde la API
     private loadTempFromDB(){
+      
+      this.http.get<Coordenadas[]>(`${ environment.backUrl }/acelerometro`).subscribe((resp) =>{
+        console.log(resp);
+        this.acelerometro.set(resp[resp.length-1]);
+      });
+
+      this.http.get<Coordenadas[]>(`${ environment.backUrl }/giroscopio`).subscribe((resp) =>{
+        console.log(resp);
+        this.giroscopio.set(resp[resp.length-1]);
+      });
+
       this.http.get<Sensor[]>(`${ environment.backUrl }/temperatura`).subscribe((resp) =>{
         console.log(resp);
         this.temperatura.set(resp[resp.length-1]);
       });
+
+      this.http.get<Sensor[]>(`${ environment.backUrl }/presion`).subscribe((resp) =>{
+        console.log(resp);
+        this.presion.set(resp[resp.length-1]);
+      });
+
+      this.http.get<Sensor[]>(`${ environment.backUrl }/co2`).subscribe((resp) =>{
+        console.log(resp);
+        this.co2.set(resp[resp.length-1]);
+      });
+
+      this.http.get<Sensor[]>(`${ environment.backUrl }/altura`).subscribe((resp) =>{
+        console.log(resp);
+        this.altura.set(resp[resp.length-1]);
+      });
+
     }
 }

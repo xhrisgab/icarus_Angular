@@ -5,7 +5,11 @@ export interface Sensor{
 }
 
 export interface Coordenadas{
-  x:number;
-  y:number;
-  z:number;
+  id: number;
+  fecha: string;
+  valor: {
+    x:number;
+    y:number;
+    z:number;
+  }
 }

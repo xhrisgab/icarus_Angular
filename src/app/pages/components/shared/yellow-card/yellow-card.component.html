@@ -3,7 +3,7 @@
       <label class="my-3" for="Logs" style="color: #F27244; font-weight: bold;">{{ title() }}</label>
   </div>
   <div class="col-6 my-auto">
-    <a [routerLink]="['/history/1']" >
+    <a [routerLink]="['/history/',linkPage()]" >
       <button class="button2">Ver detalles</button>
     </a>
   </div>
@@ -14,7 +14,7 @@
           <label for="X" class="label1 text-center px-2 py-1">X</label>
       </div>
       <div class="col-8">
-          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().x }}" disabled>
+          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().valor.x }}" disabled>
       </div>
   </div>
   <div class="row py-2 justify-content-center">
@@ -22,7 +22,7 @@
           <label for="Y" class="label1 text-center px-2 py-1">Y</label>
       </div>
       <div class="col-8">
-          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().y }}" disabled>
+          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().valor.y }}" disabled>
       </div>
   </div>
   <div class="row py-2 justify-content-center">
@@ -30,7 +30,7 @@
           <label for="Z" class="label1 text-center px-2 py-1">Z</label>
       </div>
       <div class="col-8">
-          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().z }}" disabled>
+          <input class="text1 text-center py-1" type="text" value="{{ coordenadas().valor.z }}" disabled>
       </div>
   </div>
 </div>

@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
-interface Coordenadas{
-  x:number;
-  y:number;
-  z:number;
-}
+import { Coordenadas } from '../../../../interfaces/lora.interface';
 
 @Component({
   selector: 'yellow-card',
@@ -19,5 +14,6 @@ export class YellowCardComponent {
 
   title= input.required<string>();
   coordenadas =input.required<Coordenadas>();
+  linkPage=input.required<string>();
 
 }

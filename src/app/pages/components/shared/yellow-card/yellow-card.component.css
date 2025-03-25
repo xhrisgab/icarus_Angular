@@ -35,9 +35,9 @@
 
 .text1 {
   border: 2px solid #F27244;
-  background-color: #F2B441;
+  background-color: transparent;
   border-radius: 10px;
-  color: #1F6A73;
+  color: #36BFBF;
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
