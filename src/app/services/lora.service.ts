@@ -50,11 +50,12 @@ export class LoraService {
       this.timerID=setInterval(()=>{
         this.linkLora.set(true);
         this.bateria.update((current)=> current = Number((Math.random()*100).toFixed(2)));
-
+        this.loraDate = new Date();
         // Actualiza datos en tiempo real
         this.temperatura.update((temp)=> temp={
           id:this.conTemporal+1,
-          fecha:Date(),
+          fecha:this.loraDate.getDay()+"/"+this.loraDate.getMonth()+"/"+this.loraDate.getFullYear()+" "+this.loraDate.getHours()+":"+this.loraDate.getMinutes()+":"+this.loraDate.getSeconds(),
+          //fecha: Date(),
           valor: this.bateria()
         })
         this.conTemporal++;
@@ -62,7 +63,7 @@ export class LoraService {
         //Almacena en BD
         this.http.post<Sensor>(`${ environment.backUrl }/temperatura`, this.temperatura())
         .subscribe( (resp) => console.log(resp) );
-  
+
       },3000)
     }
 
