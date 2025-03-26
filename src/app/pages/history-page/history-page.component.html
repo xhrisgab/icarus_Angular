@@ -1,27 +1,27 @@
 <div class="container-fluid">
     <div class="row text-center">
-        <h5 class="" style="color: #F27244;">Presion</h5>
+        <h5 class="" style="color: #F27244;">{{ this.query() }}</h5>
         <p>Datos de la presion medido en atmosferas</p>
-        <circle-progress [percent]="0.70" 
-            [maxPercent]="2"
+        <circle-progress [percent]="this.getCircleData(this.query())"
+            [maxPercent]="100"
             [toFixed]="2"
-            [radius]="50" 
-            [outerStrokeWidth]="10" 
+            [radius]="50"
+            [outerStrokeWidth]="10"
             [innerStrokeWidth]="4"
-            [showUnits]="false" 
-            [subtitle]="'atmosfe ras'" 
-            [outerStrokeColor]="'#1F6A73'" 
+            [showUnits]="false"
+            [subtitle]="'atmosfe ras'"
+            [outerStrokeColor]="'#1F6A73'"
             [innerStrokeColor]="'#F2B441'"
-            [animation]="true" 
+            [animation]="true"
             [animationDuration]="800"></circle-progress>
     </div>
     <div class="row text-center">
         <!-- <canvas id="canvas" height="300%">{{ chart }}</canvas> -->
-        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}" (chartInstance)="getChartInstance($event)"></canvasjs-chart> 
+        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}" (chartInstance)="getChartInstance($event)"></canvasjs-chart>
     </div>
     <div class="row text-center">
         <table>
-            
+
         </table>
     </div>
 </div>

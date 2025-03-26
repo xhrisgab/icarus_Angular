@@ -57,6 +57,8 @@ export class HistoryPageComponent {
 
 	updateChart = () => {
 
+
+
 		this.dps.push({ y: this.loraService.temperatura().valor, label: this.loraService.temperatura().fecha, x: this.loraService.temperatura().id });
 
 		if (this.dps.length >  10 ) {
@@ -81,4 +83,24 @@ export class HistoryPageComponent {
 			}
 		}
 	} */
+
+    private aux:number=0;
+
+    getCircleData(valor:string){
+      switch(valor) {
+        case 'temperatura':
+          this.aux =this.loraService.temperatura().valor;
+          break;
+        case 'presion':
+          this.aux =this.loraService.presion().valor;
+          break;
+        case 'co2':
+          this.aux =this.loraService.co2().valor;
+          break;
+        case 'altura':
+          this.aux =this.loraService.altura().valor;
+          break;
+      }
+      return this.aux;
+    }
 }

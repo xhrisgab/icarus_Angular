@@ -51,7 +51,7 @@ export class LoraService {
       valor: 0
     });
 
-    private datosBD = signal<Sensor[]|Coordenadas[]>([]);
+    private datosBDSensor = signal<Sensor[]>([]);
 
     //Funcion para actualizar y enviar datos a la API para almacenar
     addDataDB(){
@@ -83,7 +83,7 @@ export class LoraService {
 
     //Primera carga de datos desde la API
     private loadTempFromDB(){
-      
+
       this.http.get<Coordenadas[]>(`${ environment.backUrl }/acelerometro`).subscribe((resp) =>{
         console.log(resp);
         this.acelerometro.set(resp[resp.length-1]);
@@ -117,9 +117,9 @@ export class LoraService {
     }
 
     historialAPI(pagina:string){
-      
+
       this.http
-        .get<Sensor[]|Coordenadas[]>(`${ environment.backUrl }/${pagina}/`,{
+        .get<Sensor[]>(`${ environment.backUrl }/${pagina}/`,{
           params: {
             _sort:'id',
             _order:'desc',
@@ -127,9 +127,9 @@ export class LoraService {
           }
         })
         .subscribe((resp) =>{
-          this.datosBD.set(resp);
+          this.datosBDSensor.set(resp);
         //console.log(resp);
       });
-      return this.datosBD();
+      return this.datosBDSensor();
     }
 }
