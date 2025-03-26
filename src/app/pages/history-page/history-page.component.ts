@@ -25,10 +25,11 @@ export class HistoryPageComponent {
 	)
 
   public loraService = inject(LoraService);
- //-----
-   dps:any = [];
-	chart: any;
 
+
+ //-----
+   	dps:any = [];
+	chart: any;
 	chartOptions = {
 	  exportEnabled: true,
     theme: "dark2",
@@ -51,18 +52,33 @@ export class HistoryPageComponent {
 
 	getChartInstance(chart: object) {
 		this.chart = chart;
-		setTimeout(this.updateChart, 3000); //Chart updated every 5 second
+		setTimeout(this.updateChart, 3000); //Chart updated every 3 second
 	}
 
 	updateChart = () => {
+
 		this.dps.push({ y: this.loraService.temperatura().valor, label: this.loraService.temperatura().fecha, x: this.loraService.temperatura().id });
 
 		if (this.dps.length >  10 ) {
 			this.dps.shift();
 		}
-		console.log(this.dps);
+		console.log('de la API:',this.loraService.historialAPI(this.query()));
+
+		// this.setDataDPS();
+		// console.log(this.dps);
 
 		this.chart.render();
-		setTimeout(this.updateChart, 5000); //Chart updated every 1 second
+		setTimeout(this.updateChart, 3000); //Chart updated every 3 second
 	}
+
+	//**********  prueba para recuperar datos
+/* 	private setDataDPS(){
+		const fromAPI= this.loraService.historialAPI(this.query());
+		if(fromAPI.length>0){
+			this.dps=[];
+			for (let index = 0; index < fromAPI.length; index++) {
+				this.dps.push({label: fromAPI[index].fecha, y: fromAPI[index].valor, x: fromAPI[index].id });
+			}
+		}
+	} */
 }

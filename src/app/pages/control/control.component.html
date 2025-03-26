@@ -79,16 +79,16 @@
 
     <div class="row mt-5">
         <div class="col-6 col-xl-3">
-            <blue-card [datoSensor]="loraService.temperatura()" [nameCard]="'Temperatura'" [unidad]="'K'"></blue-card>
+            <blue-card [datoSensor]="loraService.temperatura()" [nameCard]="'Temperatura'" [unidad]="'K'" [linkPage]="'temperatura'"></blue-card>
         </div>
         <div class="col-6 col-xl-3">
-            <blue-card [datoSensor]="loraService.presion()" [nameCard]="'Presion'" [unidad]="'atm'"></blue-card>
+            <blue-card [datoSensor]="loraService.presion()" [nameCard]="'Presion'" [unidad]="'atm'" [linkPage]="'presion'"></blue-card>
         </div>
         <div class="col-6 col-xl-3">
-            <blue-card [datoSensor]="loraService.co2()" [nameCard]="'CO2'" [unidad]="'ppm'"></blue-card>
+            <blue-card [datoSensor]="loraService.co2()" [nameCard]="'CO2'" [unidad]="'ppm'" [linkPage]="'co2'"></blue-card>
         </div>
         <div class="col-6 col-xl-3">
-            <blue-card [datoSensor]="loraService.altura()" [nameCard]="'Altura'" [unidad]="'m'"></blue-card>
+            <blue-card [datoSensor]="loraService.altura()" [nameCard]="'Altura'" [unidad]="'m'" [linkPage]="'altura'"></blue-card>
         </div>
     </div>
 

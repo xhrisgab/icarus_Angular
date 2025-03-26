@@ -17,10 +17,14 @@ export class LoraService {
 
     // DATOS
     loraDate = new Date();
+
     //Habilita boton conectar o desconectar puerto COM
     linkLora = signal(false);
+
     //Verifica estado de la Bateria
     bateria = signal(100);
+
+
     //Seccion de datos del LORA
     acelerometro = signal<Coordenadas>({id:0, fecha: '', valor: {x:0,y:0,z:0}});
     giroscopio = signal<Coordenadas>({id:0, fecha: '', valor:{x:0,y:0,z:0}});
@@ -46,6 +50,8 @@ export class LoraService {
       fecha: Date(),
       valor: 0
     });
+
+    private datosBD = signal<Sensor[]|Coordenadas[]>([]);
 
     //Funcion para actualizar y enviar datos a la API para almacenar
     addDataDB(){
@@ -75,7 +81,7 @@ export class LoraService {
       this.linkLora.set(false);
     }
 
-    //Primera muestra de datos y prueba desde la API
+    //Primera carga de datos desde la API
     private loadTempFromDB(){
       
       this.http.get<Coordenadas[]>(`${ environment.backUrl }/acelerometro`).subscribe((resp) =>{
@@ -108,5 +114,22 @@ export class LoraService {
         this.altura.set(resp[resp.length-1]);
       });
 
+    }
+
+    historialAPI(pagina:string){
+      
+      this.http
+        .get<Sensor[]|Coordenadas[]>(`${ environment.backUrl }/${pagina}/`,{
+          params: {
+            _sort:'id',
+            _order:'desc',
+            _end:10
+          }
+        })
+        .subscribe((resp) =>{
+          this.datosBD.set(resp);
+        //console.log(resp);
+      });
+      return this.datosBD();
     }
 }

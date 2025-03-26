@@ -15,5 +15,5 @@ export class BlueCardComponent {
   nameCard = input.required<string>();
   unidad = input.required<string>();
   datoSensor = input.required<Sensor>();
-
+  linkPage = input.required<string>();
  }
