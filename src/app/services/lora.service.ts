@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Sensor, Coordenadas } from '../interfaces/lora.interface';
 import { environment } from '../environments/environment.development';
 
+
+import * as serialService from '../../assets/SerialService';
+
+
 @Injectable({providedIn: 'root'})
 export class LoraService {
 
@@ -11,6 +15,8 @@ export class LoraService {
     constructor() {
       this.loadTempFromDB();
     }
+
+    //const serialS = new serialService();
 
     private timerID: any;
     private conTemporal:number = 0;
@@ -55,6 +61,9 @@ export class LoraService {
 
     //Funcion para actualizar y enviar datos a la API para almacenar
     addDataDB(){
+      //PRUEBA DE JS
+      //serialService.default.reqPrueba();
+      this.connectPort();
 
       this.timerID=setInterval(()=>{
         this.linkLora.set(true);
@@ -78,6 +87,7 @@ export class LoraService {
     //Fucion Detener actualizacion de datos y desconecion del Puerto COM
     stopAdd(){
       clearInterval(this.timerID);
+      this.desconnectPort()
       this.linkLora.set(false);
     }
 
@@ -132,4 +142,16 @@ export class LoraService {
       });
       return this.datosBDSensor();
     }
+
+    async connectPort(){
+      const port = await serialService.default.reqPort();
+      console.log(port);
+      await serialService.default.connect(9600);
+
+    }
+
+    async desconnectPort(){
+      await serialService.default.disconnect();
+    }
+
 }
