@@ -1,27 +1,49 @@
 <div class="container-fluid">
     <div class="row text-center">
-        <h5 class="" style="color: #F27244;">{{ this.query() }}</h5>
-        <p>Datos de la presion medido en atmosferas</p>
-        <circle-progress [percent]="this.getCircleData(this.query())"
-            [maxPercent]="100"
-            [toFixed]="2"
-            [radius]="50"
-            [outerStrokeWidth]="10"
-            [innerStrokeWidth]="4"
-            [showUnits]="false"
-            [subtitle]="'atmosfe ras'"
-            [outerStrokeColor]="'#1F6A73'"
-            [innerStrokeColor]="'#F2B441'"
-            [animation]="true"
-            [animationDuration]="800"></circle-progress>
+        <h5 class="" style="color: #F27244;">{{ this.query() | titlecase }}</h5>
+        <p style="color: #F2B441">Datos de {{ this.query() }} medido en  <strong>{{ this.getUnidades(this.query()).n }}</strong> </p>
+        <circle-progress [percent]="this.getCircleData(this.query())" 
+        [maxPercent]="100" 
+        [toFixed]="2" 
+        [radius]="50"
+        [outerStrokeWidth]="10" 
+        [innerStrokeWidth]="4" 
+        [showUnits]="false" 
+        [showSubtitle]="false"
+        [outerStrokeColor]="'#1F6A73'" 
+        [innerStrokeColor]="'#F2B441'" 
+        [animation]="true"
+        [animationDuration]="800"></circle-progress>
     </div>
     <div class="row text-center">
         <!-- <canvas id="canvas" height="300%">{{ chart }}</canvas> -->
-        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}" (chartInstance)="getChartInstance($event)"></canvasjs-chart>
+        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"
+            (chartInstance)="getChartInstance($event)"></canvasjs-chart>
     </div>
-    <div class="row text-center">
-        <table>
 
+    <hr>
+    <br>
+
+    <h1 style="color: #F27244;">Cantidad de datos mostrados en la tabla : {{ counterData() }}</h1>
+    <button class="button2 py-1 mx-2" (click)="increaseBy(-1)" >-1</button>
+    <button class="button2 py-1 mx-2" (click)="increaseBy(+1)" >+1</button>
+
+    <div class="row text-center ">
+        <table class="table table-striped table-dark">
+            <thead>
+                <th># Paquete</th>
+                <th>Fecha - Hora</th>
+                <th>valor ({{ this.getUnidades(this.query()).u }})</th>
+            </thead>
+            <tbody>
+                @for (dato of this.datosTabla(); track $index) {
+                <tr>
+                    <th>{{ dato.id }}</th>
+                    <td>{{ dato.fecha }}</td>
+                    <td>{{ dato.valor }}</td>
+                </tr>
+                }
+            </tbody>
         </table>
     </div>
 </div>

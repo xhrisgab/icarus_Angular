@@ -1,0 +1,23 @@
+.button2 {
+    background-color: transparent;
+    border: 2px solid #F2B441;
+    border-radius: 20px;
+    color: #F2B441;
+    padding: 1px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.button2:hover {
+    background-color: #F27244;
+    color: #F2B441;
+}
+
+.button2:active {
+    background-color: #36BFBF;
+    /* box-shadow: 0 5px #666; */
+    transform: translateY(4px);
+}

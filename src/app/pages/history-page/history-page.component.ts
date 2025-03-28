@@ -1,16 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SharedModule } from '../components/shared/shared.module';
+
+import { TitleCasePipe } from '@angular/common';
 
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { LoraService } from '../../services/lora.service';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { Sensor } from '../../interfaces/lora.interface';
 
 @Component({
   selector: 'app-history-page',
   standalone: true,
-  imports: [SharedModule, CanvasJSAngularChartsModule],
+  imports: [SharedModule, CanvasJSAngularChartsModule, TitleCasePipe],
   templateUrl: './history-page.component.html',
   styleUrl: './history-page.component.css',
   //changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,19 +31,18 @@ export class HistoryPageComponent {
 
 
  //-----
+	datosTabla = signal<Sensor[]>([]);
+	counterData = signal(10);
    	dps:any = [];
 	chart: any;
 	chartOptions = {
-	  exportEnabled: true,
+	exportEnabled: true,
     theme: "dark2",
 	  title: {
 		text: "Histograma de "+this.query(),
 	  },
     axisX: {
-			labelFormatter: ""/* function (e:any) {
-				//return CanvasJS.formatDate( e.value, "DD-MMM hh:mm:ss");
-				return;
-			} */,
+			labelFormatter: "",
 			labelAngle: -20
 		},
 	  data: [{
@@ -52,37 +54,30 @@ export class HistoryPageComponent {
 
 	getChartInstance(chart: object) {
 		this.chart = chart;
-		setTimeout(this.updateChart, 3000); //Chart updated every 3 second
+		setTimeout(this.updateChart, 1000); //Chart updated every 3 second
 	}
 
 	updateChart = () => {
-
-
 
 		this.dps.push({ y: this.loraService.temperatura().valor, label: this.loraService.temperatura().fecha, x: this.loraService.temperatura().id });
 
 		if (this.dps.length >  30 ) {
 			this.dps.shift();
 		}
-		console.log('de la API:',this.loraService.historialAPI(this.query()));
+		//console.log('de la API:',this.loraService.historialAPI(this.query()));
 
-		// this.setDataDPS();
+		this.datosTabla.set(this.setDataTabla());
 		// console.log(this.dps);
 
 		this.chart.render();
-		setTimeout(this.updateChart, 3000); //Chart updated every 3 second
+		setTimeout(this.updateChart, 1000); //Chart updated every 3 second
 	}
 
-	//**********  prueba para recuperar datos
-/* 	private setDataDPS(){
-		const fromAPI= this.loraService.historialAPI(this.query());
-		if(fromAPI.length>0){
-			this.dps=[];
-			for (let index = 0; index < fromAPI.length; index++) {
-				this.dps.push({label: fromAPI[index].fecha, y: fromAPI[index].valor, x: fromAPI[index].id });
-			}
-		}
-	} */
+
+	private setDataTabla(){
+		const fromAPI= this.loraService.historialAPI(this.query(),this.counterData());
+		return fromAPI;
+	}
 
     private aux:number=0;
 
@@ -103,4 +98,28 @@ export class HistoryPageComponent {
       }
       return this.aux;
     }
+
+	private unidad={u:'',n:''};
+
+	getUnidades(valor:string){
+		switch(valor) {
+		  case 'temperatura':
+			this.unidad={u:'K',n:'Kelvin'};
+			break;
+		  case 'presion':
+			this.unidad={u:'atm',n:'Atmosferas'};
+			break;
+		  case 'co2':
+			this.unidad={u:'CO2',n:'Dioxido de Carbono'};
+			break;
+		  case 'altura':
+			this.unidad={u:'m',n:'Metros'};
+			break;
+		}
+		return this.unidad;
+	  }
+
+	increaseBy(value: number) {
+		this.counterData.update((current) => current + value);
+	  }
 }
