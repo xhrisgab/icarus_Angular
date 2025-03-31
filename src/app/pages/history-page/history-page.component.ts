@@ -61,7 +61,7 @@ export class HistoryPageComponent {
 
 		this.dps.push({ y: this.loraService.temperatura().valor, label: this.loraService.temperatura().fecha, x: this.loraService.temperatura().id });
 
-		if (this.dps.length >  30 ) {
+		if (this.dps.length >  this.counterData() ) {
 			this.dps.shift();
 		}
 		//console.log('de la API:',this.loraService.historialAPI(this.query()));

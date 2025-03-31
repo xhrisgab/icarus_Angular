@@ -23,7 +23,7 @@ export class LoraService {
 
   // DATOS
   loraDate = new Date();
-  fechaApi ="";
+  fechaApi = "";
 
   //Habilita boton conectar o desconectar puerto COM
   linkLora = signal(false);
@@ -62,29 +62,26 @@ export class LoraService {
 
   //Funcion para actualizar y enviar datos a la API para almacenar
   addDataDB() {
+
     //PRUEBA DE JS
     //serialService.default.reqPrueba();
-    this.connectPort();
 
-    this.timerID = setInterval(() => {
-      this.linkLora.set(true);
-      this.bateria.update((current) => current -1); //bateria seteada descuenta en 1
-      this.loraDate = new Date();
-      this.fechaApi = this.loraDate.getDay() + "/" + this.loraDate.getMonth() + "/" + this.loraDate.getFullYear() + " " + this.loraDate.getHours() + ":" + this.loraDate.getMinutes() + ":" + this.loraDate.getSeconds(),
-      // Actualiza datos en tiempo real
-      this.temperatura.update((temp) => temp = {
-        id: this.conTemporal + 1,
-        fecha: this.fechaApi,
-        //fecha: Date(),
-        valor: this.bateria()
+    this.connectPort()
+      .then(() => {
+        this.linkLora.set(true);
+        this.timerID = setInterval(() => {
+        console.log(serialService.default.getCache());
+
+        this.bateria.update((current) => current - 1); //bateria seteada descuenta en 1
+        this.conTemporal++;
+        this.loraDate = new Date();
+        this.fechaApi = this.loraDate.getDay() + "/" + this.loraDate.getMonth() + "/" + this.loraDate.getFullYear() + " " + this.loraDate.getHours() + ":" + this.loraDate.getMinutes() + ":" + this.loraDate.getSeconds();
+
+        this.saveAndUpdateData(serialService.default.getCache())
+        }, 2000)   //  <----- Modificar tiempo para almacenar y mostrar datos!!!! ------
       })
-      this.conTemporal++;
+      .catch(err => console.log(err));
 
-      //Almacena en BD
-      this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura())
-        .subscribe((resp) => console.log(resp));
-
-    }, 3000)
   }
   //Fucion Detener actualizacion de datos y desconecion del Puerto COM
   stopAdd() {
@@ -150,12 +147,41 @@ export class LoraService {
   async connectPort() {
     const port = await serialService.default.reqPort();
     console.log(port);
-    await serialService.default.connect(9600);
+    await serialService.default.connect(9600)
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch(err => console.log(err))
 
   }
   //Llama funcion disconnect de SerialService - Hendrik
   async disconnectPort() {
     await serialService.default.disconnect();
+  }
+
+  // Actualiza data para Interfaz y envia info a la API para almacenar
+  saveAndUpdateData(data: string | any[]) {
+    // Actualiza y formatea datos
+    this.temperatura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
+    this.presion.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
+    this.co2.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
+    this.altura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
+    this.acelerometro.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: 0, y: 0, z: 0 } });
+    this.giroscopio.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: 0, y: 0, z: 0 } });
+
+    //Almacena en BD de la API
+    this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura())
+      .subscribe((resp) => console.log(resp));
+    this.http.post<Sensor>(`${environment.backUrl}/presion`, this.presion())
+      .subscribe((resp) => console.log(resp));
+    this.http.post<Sensor>(`${environment.backUrl}/co2`, this.co2())
+      .subscribe((resp) => console.log(resp));
+    this.http.post<Sensor>(`${environment.backUrl}/altura`, this.altura())
+      .subscribe((resp) => console.log(resp));
+    this.http.post<Sensor>(`${environment.backUrl}/acelerometro`, this.acelerometro())
+      .subscribe((resp) => console.log(resp));
+    this.http.post<Sensor>(`${environment.backUrl}/giroscopio`, this.giroscopio())
+      .subscribe((resp) => console.log(resp));
   }
 
 }
