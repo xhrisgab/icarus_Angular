@@ -1,21 +1,21 @@
 <div class="container-fluid mt-4 p-5" style="background-color:#051926;">
     <div class="row">
-        <div class="col-3 content-justify-center">
+        <div class="col-3 content-justify-center my-auto">
             <h5 class='text-center' style="color: #F2B441">Puerto Serial:</h5>
-            <select class="form-select mb-2" aria-label="Default select example"
+            <!-- <select class="form-select mb-2" aria-label="Default select example"
                 style="background-color:#F2B441; border-color: #F27244">
                 <option value="COM0" selected>COM 0</option>
                 <option value="COM1">COM 1</option>
                 <option value="COM2">COM 2</option>
                 <option value="COM3">COM 3</option>
-            </select>
+            </select> -->
         </div>
         <div class="col-3 my-auto">
             @if (!loraService.linkLora()) {
-                <button class="button1" (click)="loraService.addDataDB()" >Conectar</button>
+                <button class="button1" (click)="loraService.addDataDB()" >Seleccionar Puerto Serial</button>
             }
             @else {
-                <button class="button1" (click)="loraService.stopAdd()" >Desconectar</button>
+                <button class="button1" (click)="loraService.stopAdd()" >Desconectar Puerto Serial</button>
             }
         </div>
         <!-- <div class="col-3">
@@ -25,7 +25,7 @@
             <img src="/img/logo2.png" alt="Logo-Icarus" width="280" height="80">
         </div>
     </div>
-
+<br>
     <div class="row mt-3">
         <div class="col-6 col-xl-3">
             <label class="my-3" for="Logs" style="color: #F27244; font-weight: bold;">Estado - Logs</label>

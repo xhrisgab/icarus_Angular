@@ -59,7 +59,8 @@ export class LoraService {
   });
 
   private datosBDSensor = signal<Sensor[]>([]);
-
+  private datosBDCoordenadas = signal<Coordenadas[]>([]);
+  
   //Funcion para actualizar y enviar datos a la API para almacenar
   addDataDB() {
 
@@ -125,7 +126,7 @@ export class LoraService {
 
   }
 
-  //Retorna los ultimos registros de la API, por defecto 10
+  //Retorna los ultimos registros de la API, por defecto 10 ---- SENSOR
   historialAPI(pagina: string, cantidad: number = 10) {
 
     this.http
@@ -141,6 +142,24 @@ export class LoraService {
         //console.log(resp);
       });
     return this.datosBDSensor();
+  }
+
+  //Retorna los ultimos registros de la API, por defecto 10 ---- COORDENADAS
+  historialAPICoordenadas(pagina: string, cantidad: number = 10) {
+
+    this.http
+      .get<Coordenadas[]>(`${environment.backUrl}/${pagina}/`, {
+        params: {
+          _sort: 'id',
+          _order: 'desc',
+          _end: cantidad
+        }
+      })
+      .subscribe((resp) => {
+        this.datosBDCoordenadas.set(resp);
+        //console.log(resp);
+      });
+    return this.datosBDCoordenadas();
   }
 
   //Llama funcion conectar de SerialService - Hendrik
@@ -166,8 +185,8 @@ export class LoraService {
     this.presion.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
     this.co2.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
     this.altura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
-    this.acelerometro.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: 0, y: 0, z: 0 } });
-    this.giroscopio.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: 0, y: 0, z: 0 } });
+    this.acelerometro.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
+    this.giroscopio.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
 
     //Almacena en BD de la API
     this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura())

@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="row text-center ">
+        <h5 class="" style="color: #F27244;">{{ this.query() | titlecase }}</h5>
+        <p style="color: #F2B441">Datos del <strong>{{ this.query() }}</strong> en tiempo real: {{ getCircleData(query()) }}</p>
+        
+        
+    </div>
+    
+    <div class="row justify-content-center">
+        <!-- aria-valuenow="45"  deontro el progressbar-->
+        <div class="flex" role="progressbar" 
+        aria-valuemin="0" aria-valuemax="100" style="--value: {{ getCircleData(query()) }}"></div>
+    </div>
+    
+    <br>
+    <br>
+    <div class="row text-center">
+        <!-- <canvas id="canvas" height="300%">{{ chart }}</canvas> -->
+        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"
+            (chartInstance)="getChartInstance($event)"></canvasjs-chart>
+    </div>
+
+    <hr>
+    <br>
+
+    <h1 style="color: #F27244;">Cantidad de datos mostrados en la tabla : {{ counterData() }}</h1>
+    <button class="button2 py-1 mx-2" (click)="increaseBy(-1)" >-1</button>
+    <button class="button2 py-1 mx-2" (click)="increaseBy(+1)" >+1</button>
+
+    <div class="row text-center ">
+        <table class="table table-striped table-dark">
+            <thead>
+                <th># Paquete</th>
+                <th>Fecha - Hora</th>
+                <th>Eje x:</th>
+                <th>Eje y:</th>
+                <th>Eje z:</th>
+            </thead>
+            <tbody>
+                @for (dato of this.datosTabla(); track $index) {
+                <tr>
+                    <th>{{ dato.id }}</th>
+                    <td>{{ dato.fecha }}</td>
+                    <td>{{ dato.valor.x }}</td>
+                    <td>{{ dato.valor.y }}</td>
+                    <td>{{ dato.valor.z }}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
