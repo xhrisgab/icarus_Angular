@@ -11,46 +11,48 @@ import { map } from 'rxjs';
 import { Coordenadas } from '../../interfaces/lora.interface';
 
 @Component({
-  selector: 'app-history2-page',
-  standalone: true,
-  imports: [SharedModule, CanvasJSAngularChartsModule, TitleCasePipe],
-  templateUrl: './history2-page.component.html',
-  styleUrl: './history2-page.component.css',
-  //changeDetection: ChangeDetectionStrategy.OnPush,
+	selector: 'app-history2-page',
+	standalone: true,
+	imports: [SharedModule, CanvasJSAngularChartsModule, TitleCasePipe],
+	templateUrl: './history2-page.component.html',
+	styleUrl: './history2-page.component.css',
+	//changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class History2PageComponent {
 
 	//Recuperamos params del link
 	query = toSignal(
 		inject(ActivatedRoute).params.pipe(
-			map( params => params['id'])
+			map(params => params['id'])
 		)
 	)
 
-  public loraService = inject(LoraService);
+	public loraService = inject(LoraService);
 
 
- //-----
+	//-----
 	datosTabla = signal<Coordenadas[]>([]);
 	counterData = signal(10);
-   	dps:any = [];
+	dps: any = [];
 	chart: any;
 	chartOptions = {
-	exportEnabled: true,
-    theme: "dark2",
-	  title: {
-		text: "Histograma de "+this.query(),
-	  },
-    axisX: {
+		exportEnabled: true,
+		theme: "dark2",
+		title: {
+			text: "Histograma de " + this.query(),
+		},
+		axisX: {
 			labelFormatter: "",
 			labelAngle: -20
 		},
-	  data: [{
-		type: "line",
-    //color: '#351387',
-		dataPoints: this.dps,
-	  }]
+		data: [{
+			type: "line",
+			//color: '#351387',
+			dataPoints: this.dps,
+		}]
 	}
+
+
 
 	getChartInstance(chart: object) {
 		this.chart = chart;
@@ -59,11 +61,22 @@ export class History2PageComponent {
 
 	updateChart = () => {
 
-		this.dps.push({ y: this.loraService.temperatura().valor, label: this.loraService.temperatura().fecha, x: this.loraService.temperatura().id });
+		this.dps.push({ y: this.aux, label: this.setDataTabla()[this.setDataTabla().length-1].fecha, x: this.setDataTabla()[this.setDataTabla().length-1].id });
 
 		if (this.dps.length >  this.counterData() ) {
 			this.dps.shift();
 		}
+		
+		/* var auxDatos:any =[];
+
+		this.setDataTabla().forEach((elt) => {
+			auxDatos.push({ y: elt.valor.x, label: elt.fecha, x: elt.id });
+			console.log(elt);
+			
+		});
+		this.dps=auxDatos;
+			
+			console.log(this.dps); */
 		//console.log('de la API:',this.loraService.historialAPI(this.query()));
 
 		this.datosTabla.set(this.setDataTabla());
@@ -74,28 +87,35 @@ export class History2PageComponent {
 	}
 
 
-	private setDataTabla(){
-		const fromAPI= this.loraService.historialAPICoordenadas(this.query(),this.counterData());
+	private setDataTabla() {
+		const fromAPI = this.loraService.historialAPICoordenadas(this.query(), this.counterData());
 		return fromAPI;
 	}
 
-    private aux:number=0;
+	private aux: number = 0;
 
-    getCircleData(valor:string){
-      switch(valor) {
-        case 'acelerometro':
-          this.aux =this.loraService.acelerometro().valor.z;
-          break;
-        case 'giroscopio':
-          this.aux =this.loraService.giroscopio().valor.x;
-          break;
-      }
-      return this.aux;
-    }
+	getCircleData(valor: string) {
+		switch (valor) {
+			case 'acelerometro':
+				this.aux = this.loraService.acelerometro().valor.z;
+				break;
+			case 'giroscopio':
+				this.aux = this.loraService.giroscopio().valor.x;
+				break;
+		}
+		return this.aux;
+	}
 	increaseBy(value: number) {
 		this.counterData.update((current) => current + value);
-	  }
+	}
 
-
+	/* 	ngOnInit(): void {
+			
+			const dataAux=this.setDataTabla();
 	
+			dataAux.forEach( (elt) =>{
+				this.dps.push({ y:elt.valor.x, label:elt.fecha, x:elt.id+1 });
+			} )
+		} */
+
 }

@@ -59,7 +59,7 @@ export class HistoryPageComponent {
 
 	updateChart = () => {
 
-		this.dps.push({ y: this.loraService.temperatura().valor, label: this.loraService.temperatura().fecha, x: this.loraService.temperatura().id });
+		this.dps.push({ y: this.setDataTabla()[this.setDataTabla().length-1].valor, label: this.setDataTabla()[this.setDataTabla().length-1].fecha, x: this.setDataTabla()[this.setDataTabla().length-1].id });
 
 		if (this.dps.length >  this.counterData() ) {
 			this.dps.shift();
