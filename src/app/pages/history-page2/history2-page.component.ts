@@ -61,21 +61,22 @@ export class History2PageComponent {
 
 	updateChart = () => {
 
-		this.dps.push({ y: this.aux, label: this.setDataTabla()[this.setDataTabla().length-1].fecha, x: this.setDataTabla()[this.setDataTabla().length-1].id });
+    var auxHisto=this.setDataTabla();
+		this.dps.push({ y: auxHisto[auxHisto.length-1].valor.x, label: auxHisto[auxHisto.length-1].fecha, x: auxHisto[auxHisto.length-1].id });
 
-		if (this.dps.length >  this.counterData() ) {
+		if (this.dps.length >  15 ) {
 			this.dps.shift();
 		}
-		
+
 		/* var auxDatos:any =[];
 
 		this.setDataTabla().forEach((elt) => {
 			auxDatos.push({ y: elt.valor.x, label: elt.fecha, x: elt.id });
 			console.log(elt);
-			
+
 		});
 		this.dps=auxDatos;
-			
+
 			console.log(this.dps); */
 		//console.log('de la API:',this.loraService.historialAPI(this.query()));
 
@@ -110,9 +111,9 @@ export class History2PageComponent {
 	}
 
 	/* 	ngOnInit(): void {
-			
+
 			const dataAux=this.setDataTabla();
-	
+
 			dataAux.forEach( (elt) =>{
 				this.dps.push({ y:elt.valor.x, label:elt.fecha, x:elt.id+1 });
 			} )
