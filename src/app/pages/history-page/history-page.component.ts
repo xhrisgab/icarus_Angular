@@ -110,7 +110,7 @@ export class HistoryPageComponent {
 			this.unidad={u:'atm',n:'Atmosferas'};
 			break;
 		  case 'co2':
-			this.unidad={u:'CO2',n:'Dioxido de Carbono'};
+			this.unidad={u:'CO2',n:'Partes por Millon Co2'};
 			break;
 		  case 'altura':
 			this.unidad={u:'m',n:'Metros'};
