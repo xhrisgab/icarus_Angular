@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SharedModule } from '../components/shared/shared.module';
 
+import { Chart } from "chart.js/auto";
+
 import { TitleCasePipe } from '@angular/common';
 
-import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { LoraService } from '../../services/lora.service';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -13,10 +14,10 @@ import { Coordenadas } from '../../interfaces/lora.interface';
 @Component({
 	selector: 'app-history2-page',
 	standalone: true,
-	imports: [SharedModule, CanvasJSAngularChartsModule, TitleCasePipe],
+	imports: [SharedModule, TitleCasePipe],
 	templateUrl: './history2-page.component.html',
 	styleUrl: './history2-page.component.css',
-	//changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class History2PageComponent {
 
@@ -26,65 +27,13 @@ export class History2PageComponent {
 			map(params => params['id'])
 		)
 	)
-
+	// inyectamos el servicio
 	public loraService = inject(LoraService);
 
 
 	//-----
 	datosTabla = signal<Coordenadas[]>([]);
 	counterData = signal(10);
-	dps: any = [];
-	chart: any;
-	chartOptions = {
-		exportEnabled: true,
-		theme: "dark2",
-		title: {
-			text: "Histograma de " + this.query(),
-		},
-		axisX: {
-			labelFormatter: "",
-			labelAngle: -20
-		},
-		data: [{
-			type: "line",
-			//color: '#351387',
-			dataPoints: this.dps,
-		}]
-	}
-
-
-
-	getChartInstance(chart: object) {
-		this.chart = chart;
-		setTimeout(this.updateChart, 1000); //Chart updated every 3 second
-	}
-
-	updateChart = () => {
-
-		this.dps.push({ y: this.aux, label: this.setDataTabla()[this.setDataTabla().length-1].fecha, x: this.setDataTabla()[this.setDataTabla().length-1].id });
-
-		if (this.dps.length >  this.counterData() ) {
-			this.dps.shift();
-		}
-		
-		/* var auxDatos:any =[];
-
-		this.setDataTabla().forEach((elt) => {
-			auxDatos.push({ y: elt.valor.x, label: elt.fecha, x: elt.id });
-			console.log(elt);
-			
-		});
-		this.dps=auxDatos;
-			
-			console.log(this.dps); */
-		//console.log('de la API:',this.loraService.historialAPI(this.query()));
-
-		this.datosTabla.set(this.setDataTabla());
-		// console.log(this.dps);
-
-		this.chart.render();
-		setTimeout(this.updateChart, 1000); //Chart updated every 3 second
-	}
 
 
 	private setDataTabla() {
@@ -109,13 +58,44 @@ export class History2PageComponent {
 		this.counterData.update((current) => current + value);
 	}
 
-	/* 	ngOnInit(): void {
-			
-			const dataAux=this.setDataTabla();
+
+	///chart
+
+	public chart: any;
+
+	createChart(){
+
+		this.chart = new Chart("MyChart", {
+		  type: 'line', //this denotes tha type of chart
 	
-			dataAux.forEach( (elt) =>{
-				this.dps.push({ y:elt.valor.x, label:elt.fecha, x:elt.id+1 });
-			} )
-		} */
+		  data: {// values on X-Axis
+			labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13','2022-05-14', '2022-05-15', '2022-05-16','2022-05-17' ], 
+			   datasets: [
+			  {
+				label: "Sales",
+				data: ['467','576', '572', '79', '92','574', '573', '576'],
+				backgroundColor: 'blue'
+			  },
+			  {
+				label: "Profit",
+				data: ['542', '542', '536', '327', '17','0.00', '538', '541'],
+				borderColor:'#36A2EB',
+				backgroundColor: 'gray'
+			  }  
+			]
+		  },
+		  options: {
+			aspectRatio:2.5,
+		  }
+	
+		});
+	  }
+
+	// init
+	ngOnInit(): void {
+
+		console.log('Genero CHART');
+		this.createChart();
+	}
 
 }
