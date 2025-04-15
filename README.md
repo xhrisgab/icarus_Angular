@@ -1,27 +1,46 @@
 # Icarus
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.9.
+Interfaz para la estacion terrena del Proyecto Icarus. Este permite conectarse a un puerto COM y recibir datos del CanSat.
 
-## Development server
+## Instalacion
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+El proyecto esta realizado con [Angular CLI](https://github.com/angular/angular-cli) version 18.2.9.
 
-## Code scaffolding
+Asegurate de copiar (clonar) el proyecto y ejecutar:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+  npm install
+```
+Para instalar las dependencias de desarrollo y librerias.
+
+
+## Servidor de Desarrollo
+
+Ejecuta el comando `ng serve` para generar un servidor local. Navega a la direccion `http://localhost:4200/`. La aplicacion automaticamente correra y se recargara si realizas algun cambio.
+
+## API para guardar datos
+
+El proyecto usa una API para leer y guardar datos, para ello sera necesario instalar [json-server](https://www.npmjs.com/package/json-server). Una vez instalado en tu equipo en la raiz del proyecto esta el archivo `./db.json`. realiza una copia de seguridad y copia este archivo a una ruta alterna.
+
+```bash
+  mkdir baseDatos
+  cp ./db.json ./baseDatos
+  cd ./baseDatos
+  json-server db.json
+```
+por defecto la API usa la ruta `http://localhost:3000`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Corre el comando `ng build` para generar los archivos de produccion y poder desplegar el proyecto en un servidor. los archivos se guardan por defecto en la ruta `dist/`.
 
-## Running unit tests
+## Ruta del prueba del proyecto
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Actualmente el proyecto esta alojado en el sitio: https://icarus-team.netlify.app/#/control
 
-## Running end-to-end tests
+## Mayor informacion y ayuda
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Para mayor informacion o ayuda respecto al proyecto, contactanos a travez de nuestras redes sociales:
 
-## Further help
+[Facebook](https://www.facebook.com/profile.php?id=61574729484414)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
