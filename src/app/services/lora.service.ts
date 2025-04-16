@@ -21,6 +21,8 @@ export class LoraService {
   private timerID: any;
   private conTemporal: number = 0;
 
+  // auxTimerID:any;
+
   // DATOS
   loraDate = new Date();
   fechaApi = "";
@@ -60,7 +62,7 @@ export class LoraService {
 
   private datosBDSensor = signal<Sensor[]>([]);
   private datosBDCoordenadas = signal<Coordenadas[]>([]);
-  
+
   //Funcion para actualizar y enviar datos a la API para almacenar
   addDataDB() {
 

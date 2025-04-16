@@ -12,90 +12,135 @@ import { map } from 'rxjs';
 import { Coordenadas } from '../../interfaces/lora.interface';
 
 @Component({
-	selector: 'app-history2-page',
-	standalone: true,
-	imports: [SharedModule, TitleCasePipe],
-	templateUrl: './history2-page.component.html',
-	styleUrl: './history2-page.component.css',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-history2-page',
+  standalone: true,
+  imports: [SharedModule, TitleCasePipe],
+  templateUrl: './history2-page.component.html',
+  styleUrl: './history2-page.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class History2PageComponent {
 
-	//Recuperamos params del link
-	query = toSignal(
-		inject(ActivatedRoute).params.pipe(
-			map(params => params['id'])
-		)
-	)
-	// inyectamos el servicio
-	public loraService = inject(LoraService);
+  //Recuperamos params del link
+  query = toSignal(
+    inject(ActivatedRoute).params.pipe(
+      map(params => params['id'])
+    )
+  )
+  // inyectamos el servicio
+  public loraService = inject(LoraService);
 
 
-	//-----
-	datosTabla = signal<Coordenadas[]>([]);
-	counterData = signal(10);
+  //-----
+  datosTabla = signal<Coordenadas[]>([]);
+  counterData = signal(10);
+  private auxTimerID:any;
 
 
-	private setDataTabla() {
-		const fromAPI = this.loraService.historialAPICoordenadas(this.query(), this.counterData());
-		return fromAPI;
-	}
+  private setDataTabla() {
+    const fromAPI = this.loraService.historialAPICoordenadas(this.query(), this.counterData());
+    return fromAPI;
+  }
 
-	private aux: number = 0;
+  private aux: number = 0;
 
-	getCircleData(valor: string) {
-		switch (valor) {
-			case 'acelerometro':
-				this.aux = this.loraService.acelerometro().valor.z;
-				break;
-			case 'giroscopio':
-				this.aux = this.loraService.giroscopio().valor.x;
-				break;
-		}
-		return this.aux;
-	}
-	increaseBy(value: number) {
-		this.counterData.update((current) => current + value);
-	}
+  getCircleData(valor: string) {
+    switch (valor) {
+      case 'acelerometro':
+        this.aux = this.loraService.acelerometro().valor.z;
+        break;
+      case 'giroscopio':
+        this.aux = this.loraService.giroscopio().valor.x;
+        break;
+    }
+    return this.aux;
+  }
+  increaseBy(value: number) {
+    this.counterData.update((current) => current + value);
+  }
 
 
-	///chart
+  ///chart
 
-	public chart: any;
+  public chart: any;
 
-	createChart(){
+  createChart() {
 
-		this.chart = new Chart("MyChart", {
-		  type: 'line', //this denotes tha type of chart
-	
-		  data: {// values on X-Axis
-			labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13','2022-05-14', '2022-05-15', '2022-05-16','2022-05-17' ], 
-			   datasets: [
-			  {
-				label: "Sales",
-				data: ['467','576', '572', '79', '92','574', '573', '576'],
-				backgroundColor: 'blue'
-			  },
-			  {
-				label: "Profit",
-				data: ['542', '542', '536', '327', '17','0.00', '538', '541'],
-				borderColor:'#36A2EB',
-				backgroundColor: 'gray'
-			  }  
-			]
-		  },
-		  options: {
-			aspectRatio:2.5,
-		  }
-	
-		});
-	  }
+    this.chart = new Chart("MyChart", {
+      type: 'line', //this denotes tha type of chart
 
-	// init
-	ngOnInit(): void {
+      data: {// values on X-Axis
+        labels: [],
+        datasets: [
+          {
+            label: "Eje X",
+            data: [],
+            backgroundColor: 'blue',
+            pointRadius:4
+          },
+          {
+            label: "Eje Y",
+            data: [],
+            //borderColor:'#36A2EB',
+            backgroundColor: 'gray',
+            pointRadius:4
+          },
+          {
+            label: "Eje Z",
+            data: [],
+            //borderColor:'#36A2EB',
+            backgroundColor: 'red',
+            pointRadius:4
+          },
+        ]
+      },
+      options: {
+        aspectRatio: 2.5,
+      }
 
-		console.log('Genero CHART');
-		this.createChart();
-	}
+    });
+  }
+
+//Update
+  updateChart(chart:any){
+    this.datosTabla.set(this.setDataTabla());
+    chart.data.labels=[];
+    chart.data.datasets[0].data=[];
+    chart.data.datasets[1].data=[];
+    chart.data.datasets[2].data=[];
+    this.datosTabla().forEach(element => {
+      chart.data.labels.push(element.fecha);
+      chart.data.datasets[0].data.unshift(element.valor.x);
+      chart.data.datasets[1].data.unshift(element.valor.y);
+      chart.data.datasets[2].data.unshift(element.valor.z);
+    });
+
+    console.log(chart.data.labels);
+
+    chart.update();
+  }
+
+  //Init interval
+  initUpdateInteval():void {
+
+    this.auxTimerID = setInterval(() =>{
+      this.updateChart(this.chart);
+
+    },1000);
+  }
+
+  // init
+  ngOnInit(): void {
+
+    // console.log('Genero CHART');
+    this.createChart();
+    this.initUpdateInteval();
+  }
+
+  ngOnDestroy(){
+    // console.log('Destroyed');
+
+    clearInterval(this.auxTimerID);
+  }
 
 }
