@@ -95,7 +95,7 @@ export class History2PageComponent {
         ]
       },
       options: {
-        aspectRatio: 2.5,
+        aspectRatio: 3.5,
       }
 
     });

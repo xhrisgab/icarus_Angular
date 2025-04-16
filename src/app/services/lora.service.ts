@@ -71,6 +71,11 @@ export class LoraService {
 
     this.connectPort()
       .then(() => {
+        // Lugar de recepcion de datos de SERIAL - variable data
+        // console.log(data);
+        //this.saveAndUpdateData (data);
+
+        
         this.linkLora.set(true);
         this.timerID = setInterval(() => {
         console.log(serialService.default.getCache());
@@ -79,9 +84,11 @@ export class LoraService {
         this.conTemporal++;
         this.loraDate = new Date();
         this.fechaApi = this.loraDate.getDay() + "/" + this.loraDate.getMonth() + "/" + this.loraDate.getFullYear() + " " + this.loraDate.getHours() + ":" + this.loraDate.getMinutes() + ":" + this.loraDate.getSeconds();
+          
+        //LLAMA CACHE DEL SERIAL ************* VERIFICAR para usar data o getCache **********
+        this.saveAndUpdateData(serialService.default.getCache());
 
-        this.saveAndUpdateData(serialService.default.getCache())
-        }, 2000)   //  <----- Modificar tiempo para almacenar y mostrar datos!!!! ------
+        }, 1000)   //  <----- Modificar tiempo para almacenar y mostrar datos!!!! ------
       })
       .catch(err => console.log(err));
 
@@ -181,7 +188,19 @@ export class LoraService {
   }
 
   // Actualiza data para Interfaz y envia info a la API para almacenar
-  saveAndUpdateData(data: string | any[]) {
+  saveAndUpdateData(data: string | any) {
+
+    //destructurando data recibida a un array 
+    //const splitedData = data.split(','); ************DESCOMENTAR******
+
+    // Actualiza y formatea datos -- REALES DEL SENSOR
+/*     this.altura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[3] });
+    this.temperatura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[4] });
+    this.presion.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[5] });
+    this.co2.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[7] });
+    this.acelerometro.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: splitedData[0], y: splitedData[10], z: splitedData[11] } });
+    this.giroscopio.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: splitedData[12], y: splitedData[13], z: splitedData[14] } }); */
+    
     // Actualiza y formatea datos
     this.temperatura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
     this.presion.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
