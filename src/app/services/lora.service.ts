@@ -13,7 +13,7 @@ export class LoraService {
   private http = inject(HttpClient)
 
   constructor() {
-    this.loadTempFromDB();
+    //this.loadTempFromDB();
   }
 
   //const serialS = new serialService();
@@ -78,7 +78,7 @@ export class LoraService {
         
         this.linkLora.set(true);
         this.timerID = setInterval(() => {
-        console.log(serialService.default.getCache());
+        //console.log(serialService.default.getCache());
 
         this.bateria.update((current) => current - 1); //bateria seteada descuenta en 1
         this.conTemporal++;
@@ -86,7 +86,7 @@ export class LoraService {
         this.fechaApi = this.loraDate.getDay() + "/" + this.loraDate.getMonth() + "/" + this.loraDate.getFullYear() + " " + this.loraDate.getHours() + ":" + this.loraDate.getMinutes() + ":" + this.loraDate.getSeconds();
           
         //LLAMA CACHE DEL SERIAL ************* VERIFICAR para usar data o getCache **********
-        this.saveAndUpdateData(serialService.default.getCache());
+        //this.saveAndUpdateData(serialService.default.getCache());
 
         }, 1000)   //  <----- Modificar tiempo para almacenar y mostrar datos!!!! ------
       })
@@ -101,6 +101,7 @@ export class LoraService {
   }
 
   //Primera carga de datos desde la API
+  
   private loadTempFromDB() {
 
     this.http.get<Coordenadas[]>(`${environment.backUrl}/acelerometro`).subscribe((resp) => {
@@ -175,7 +176,7 @@ export class LoraService {
   async connectPort() {
     const port = await serialService.default.reqPort();
     console.log(port);
-    await serialService.default.connect(9600)
+    await serialService.default.connect(115200)
       .then((resp) => {
         console.log(resp);
       })

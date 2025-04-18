@@ -6,6 +6,7 @@ class SerialService {
         this.isSimulate = false;
         this.cacheSize = 100;
         this.data = [];
+        this.buffer='';
         this.onDataRecived = () => { };
     }
     async reqPort() {
@@ -32,10 +33,11 @@ class SerialService {
             try {
                 const { value, done } = await this.reader.read();
                 if (done) break;
-                let text = decoder.decode(value).trim();
+                let text = await decoder.decode(value).trim();
                 if (text) {
                     this.processData(text);
-                    console.log(text);
+                    //console.log('SERIAL SERVICE JS');
+                    //console.log(text);
                 }
             } catch (error) {
                 console.error("read error:", error)
@@ -55,9 +57,21 @@ class SerialService {
     }
     processData(value) {
         try {
-            let data = value;
-            this.addCaheData(data);
-            this.onDataRecived(data);
+            // let data = value;
+            // this.addCaheData(data);
+            // this.onDataRecived(data);
+
+            this.buffer = this.buffer + value;
+            //console.log(this.buffer);
+            if(this.buffer.length > 4){
+                if(this.buffer.substring(this.buffer.length-4) =='UMSA'){
+                    console.log(this.buffer);
+                    this.addCaheData(this.buffer);
+                    this.onDataRecived(this.buffer);       
+                    this.buffer='';
+                }
+            }
+
         } catch (error) {
             console.warn("dato no valido", value)
         }
