@@ -57,15 +57,12 @@ class SerialService {
     }
     processData(value) {
         try {
-            // let data = value;
-            // this.addCaheData(data);
-            // this.onDataRecived(data);
 
             this.buffer = this.buffer + value;
             //console.log(this.buffer);
             if(this.buffer.length > 4){
                 if(this.buffer.substring(this.buffer.length-4) =='UMSA'){
-                    console.log(this.buffer);
+                    //console.log(this.buffer);
                     this.addCaheData(this.buffer);
                     this.onDataRecived(this.buffer);       
                     this.buffer='';

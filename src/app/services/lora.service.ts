@@ -78,7 +78,7 @@ export class LoraService {
         
         this.linkLora.set(true);
         this.timerID = setInterval(() => {
-        //console.log(serialService.default.getCache());
+        console.log(serialService.default.getCache()[serialService.default.getCache().length-1]);
 
         this.bateria.update((current) => current - 1); //bateria seteada descuenta en 1
         this.conTemporal++;
@@ -86,7 +86,7 @@ export class LoraService {
         this.fechaApi = this.loraDate.getDay() + "/" + this.loraDate.getMonth() + "/" + this.loraDate.getFullYear() + " " + this.loraDate.getHours() + ":" + this.loraDate.getMinutes() + ":" + this.loraDate.getSeconds();
           
         //LLAMA CACHE DEL SERIAL ************* VERIFICAR para usar data o getCache **********
-        //this.saveAndUpdateData(serialService.default.getCache());
+        this.saveAndUpdateData(serialService.default.getCache()[serialService.default.getCache().length-1]);
 
         }, 1000)   //  <----- Modificar tiempo para almacenar y mostrar datos!!!! ------
       })
@@ -192,24 +192,27 @@ export class LoraService {
   saveAndUpdateData(data: string | any) {
 
     //destructurando data recibida a un array 
-    //const splitedData = data.split(','); ************DESCOMENTAR******
+    const splitedData = data.split(','); //************DESCOMENTAR******
+
+    const [ICARUS, fechaFija, tiempoEnSeg, estadoON, alturaMSNM, tempCelsius, presionHPA, voltaje, Co2ppm, humedadRelativa, ax, ay, az, gx, gy, gz, UMSA ] = splitedData;
 
     // Actualiza y formatea datos -- REALES DEL SENSOR
-/*     this.altura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[3] });
-    this.temperatura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[4] });
-    this.presion.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[5] });
-    this.co2.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: splitedData[7] });
-    this.acelerometro.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: splitedData[0], y: splitedData[10], z: splitedData[11] } });
-    this.giroscopio.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: splitedData[12], y: splitedData[13], z: splitedData[14] } }); */
+    this.altura.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: alturaMSNM });
+    this.temperatura.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: tempCelsius });
+    this.presion.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: presionHPA });
+    this.co2.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: Co2ppm });
+    this.acelerometro.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: ax, y: ay, z: az } });
+    this.giroscopio.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: gx, y: gy, z: gz } });
     
     // Actualiza y formatea datos
-    this.temperatura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
-    this.presion.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
-    this.co2.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
-    this.altura.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: this.bateria() });
-    this.acelerometro.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
-    this.giroscopio.update((temp) => temp = { id: this.conTemporal, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
+    // this.temperatura.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: this.bateria() });
+    // this.presion.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: this.bateria() });
+    // this.co2.update((temp) => temp = { id: tiempoEnSegl, fecha: this.fechaApi, valor: this.bateria() });
+    // this.altura.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: this.bateria() });
+    // this.acelerometro.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
+    // this.giroscopio.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
 
+    /*
     //Almacena en BD de la API
     this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura())
       .subscribe((resp) => console.log(resp));
@@ -223,6 +226,7 @@ export class LoraService {
       .subscribe((resp) => console.log(resp));
     this.http.post<Sensor>(`${environment.backUrl}/giroscopio`, this.giroscopio())
       .subscribe((resp) => console.log(resp));
+      */
   }
 
 }
