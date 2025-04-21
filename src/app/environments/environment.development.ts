@@ -1,3 +1,3 @@
 export const environment = {
-    backUrl: "http://localhost:3000"
+    backUrl: "https://5120-177-222-59-170.ngrok-free.app"
 }

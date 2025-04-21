@@ -33,7 +33,7 @@ export class HistoryPageComponent {
 
   //-----
   datosTabla = signal<Sensor[]>([]);
-  counterData = signal(10);
+  counterData = signal(20);
   private auxTimerID: any;
 
   private setDataTabla() {
@@ -106,7 +106,7 @@ export class HistoryPageComponent {
         ]
       },
       options: {
-        aspectRatio: 2.5,
+        aspectRatio: 4.5,
       }
 
     });
@@ -118,7 +118,7 @@ export class HistoryPageComponent {
     chart.data.labels=[];
     chart.data.datasets[0].data=[];
     this.datosTabla().forEach(element => {
-      chart.data.labels.push(element.fecha);
+      chart.data.labels.unshift(element.fecha);
       chart.data.datasets[0].data.unshift(element.valor);
     });
     console.log(chart.data.labels);

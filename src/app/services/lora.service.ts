@@ -1,5 +1,5 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Sensor, Coordenadas } from '../interfaces/lora.interface';
 import { environment } from '../environments/environment.development';
 
@@ -10,18 +10,20 @@ import * as serialService from '../../assets/SerialService';
 @Injectable({ providedIn: 'root' })
 export class LoraService {
 
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+    })
+  };
 
   constructor() {
-    //this.loadTempFromDB();
+    this.loadTempFromDB();
   }
 
-  //const serialS = new serialService();
 
   private timerID: any;
   private conTemporal: number = 0;
-
-  // auxTimerID:any;
 
   // DATOS
   loraDate = new Date();
@@ -104,32 +106,32 @@ export class LoraService {
   
   private loadTempFromDB() {
 
-    this.http.get<Coordenadas[]>(`${environment.backUrl}/acelerometro`).subscribe((resp) => {
+    this.http.get<Coordenadas[]>(`${environment.backUrl}/acelerometro`,{responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"}}).subscribe((resp) => {
       console.log(resp);
-      this.acelerometro.set(resp[resp.length - 1]);
+      //this.acelerometro.set(resp[resp.length - 1]);
     });
 
-    this.http.get<Coordenadas[]>(`${environment.backUrl}/giroscopio`).subscribe((resp) => {
+    this.http.get<Coordenadas[]>(`${environment.backUrl}/giroscopio`,{responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"}}).subscribe((resp) => {
       console.log(resp);
       this.giroscopio.set(resp[resp.length - 1]);
     });
 
-    this.http.get<Sensor[]>(`${environment.backUrl}/temperatura`).subscribe((resp) => {
+    this.http.get<Sensor[]>(`${environment.backUrl}/temperatura`,{responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"}}).subscribe((resp) => {
       console.log(resp);
       this.temperatura.set(resp[resp.length - 1]);
     });
 
-    this.http.get<Sensor[]>(`${environment.backUrl}/presion`).subscribe((resp) => {
+    this.http.get<Sensor[]>(`${environment.backUrl}/presion`,{responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"}}).subscribe((resp) => {
       console.log(resp);
       this.presion.set(resp[resp.length - 1]);
     });
 
-    this.http.get<Sensor[]>(`${environment.backUrl}/co2`).subscribe((resp) => {
+    this.http.get<Sensor[]>(`${environment.backUrl}/co2`,{responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"}}).subscribe((resp) => {
       console.log(resp);
       this.co2.set(resp[resp.length - 1]);
     });
 
-    this.http.get<Sensor[]>(`${environment.backUrl}/altura`).subscribe((resp) => {
+    this.http.get<Sensor[]>(`${environment.backUrl}/altura`,{responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"}}).subscribe((resp) => {
       console.log(resp);
       this.altura.set(resp[resp.length - 1]);
     });
@@ -141,6 +143,7 @@ export class LoraService {
 
     this.http
       .get<Sensor[]>(`${environment.backUrl}/${pagina}/`, {
+        responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"},
         params: {
           _sort: 'id',
           _order: 'desc',
@@ -159,6 +162,7 @@ export class LoraService {
 
     this.http
       .get<Coordenadas[]>(`${environment.backUrl}/${pagina}/`, {
+        responseType: 'json', headers: {'Accept':'application/json', "ngrok-skip-browser-warning": "69420"},
         params: {
           _sort: 'id',
           _order: 'desc',
@@ -212,21 +216,19 @@ export class LoraService {
     // this.acelerometro.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
     // this.giroscopio.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
 
-    /*
     //Almacena en BD de la API
-    this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura())
+    this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura(), this.httpOptions  )
       .subscribe((resp) => console.log(resp));
-    this.http.post<Sensor>(`${environment.backUrl}/presion`, this.presion())
+    this.http.post<Sensor>(`${environment.backUrl}/presion`, this.presion(), this.httpOptions)
       .subscribe((resp) => console.log(resp));
-    this.http.post<Sensor>(`${environment.backUrl}/co2`, this.co2())
+    this.http.post<Sensor>(`${environment.backUrl}/co2`, this.co2(), this.httpOptions)
       .subscribe((resp) => console.log(resp));
-    this.http.post<Sensor>(`${environment.backUrl}/altura`, this.altura())
+    this.http.post<Sensor>(`${environment.backUrl}/altura`, this.altura(), this.httpOptions)
       .subscribe((resp) => console.log(resp));
-    this.http.post<Sensor>(`${environment.backUrl}/acelerometro`, this.acelerometro())
+    this.http.post<Sensor>(`${environment.backUrl}/acelerometro`, this.acelerometro(), this.httpOptions)
       .subscribe((resp) => console.log(resp));
-    this.http.post<Sensor>(`${environment.backUrl}/giroscopio`, this.giroscopio())
+    this.http.post<Sensor>(`${environment.backUrl}/giroscopio`, this.giroscopio(), this.httpOptions)
       .subscribe((resp) => console.log(resp));
-      */
   }
 
 }
