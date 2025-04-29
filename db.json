@@ -1,4 +1,10 @@
 {
+  "logs": [
+    {
+      "id": 0,
+      "valor": 0
+    }
+  ],
   "temperatura": [
     {
       "id": 0,

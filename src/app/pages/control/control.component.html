@@ -2,13 +2,7 @@
     <div class="row">
         <div class="col-3 content-justify-center">
             <h5 class='text-center' style="color: #F2B441">Puerto Serial:</h5>
-            <select class="form-select mb-2" aria-label="Default select example"
-                style="background-color:#F2B441; border-color: #F27244">
-                <option value="COM0" selected>COM 0</option>
-                <option value="COM1">COM 1</option>
-                <option value="COM2">COM 2</option>
-                <option value="COM3">COM 3</option>
-            </select>
+            <div class="container text-center py-1" for="serial_port" style="background-color:#F2B441; border-color: #F27244; border: 2px solid #F27244; border-radius:10px; color: #051926;">{{ 'COM-5'}}</div>
         </div>
         <div class="col-3 my-auto">
             @if (!loraService.linkLora()) {
