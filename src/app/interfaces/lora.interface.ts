@@ -13,3 +13,8 @@ export interface Coordenadas{
     z:number;
   }
 }
+
+export interface Logs{
+  id: number;
+  valor: number;
+}
