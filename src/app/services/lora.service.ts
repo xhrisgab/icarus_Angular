@@ -217,8 +217,8 @@ export class LoraService {
     // this.giroscopio.update((temp) => temp = { id: tiempoEnSeg, fecha: this.fechaApi, valor: { x: this.bateria(), y: this.bateria()+5, z: this.bateria()+10 } });
 
     //Almacena en BD de la API
-    this.http.post<Logs>(`${environment.backUrl}/logs`, {id: tiempoEnSeg, valor: data}, this.httpOptions )
-      .subscribe((resp) => console.log(resp));
+    /* this.http.post<Logs>(`${environment.backUrl}/logs`, {id: tiempoEnSeg, valor: data}, this.httpOptions )
+      .subscribe((resp) => console.log(resp)); */
     this.http.post<Sensor>(`${environment.backUrl}/temperatura`, this.temperatura(), this.httpOptions  )
       .subscribe((resp) => console.log(resp));
     this.http.post<Sensor>(`${environment.backUrl}/presion`, this.presion(), this.httpOptions)
